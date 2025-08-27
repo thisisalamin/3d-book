@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Book Gallery</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
   border: 0;
@@ -18,7 +19,7 @@
   --book-radius: 10px;
 
   --bg: #fdf3f2;
-  --book-bg: #fdeae6;
+  --book-bg: #fdf3f2;
   --intro-bg: #eed7d1;
   --font-color: #807b7b;
 
@@ -44,11 +45,54 @@
   color: var(--font-color);
 }
 
+.nav-btn {
+  background: var(--intro-bg);
+  border: none;
+  font-size: 30px;
+  padding: 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  color: var(--font-color);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.nav-btn:hover {
+  background: var(--book-bg);
+}
+
+.slider-container {
+  position: relative;
+  width: calc(3 * var(--book-width) + 2 * 40px);
+  margin: 0 auto;
+}
+
+#prev {
+  left: -60px;
+}
+
+#next {
+  right: -60px;
+}
+
 .books-container {
   display: flex;
   gap: 40px;
-  flex-wrap: wrap;
-  justify-content: center;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 20px 0;
+  width: calc(3 * var(--book-width) + 2 * 40px);
+  scroll-snap-type: x mandatory;
+}
+
+.books-container::-webkit-scrollbar {
+  display: none;
+}
+
+.books-container {
+  scrollbar-width: none;
 }
 
 .book-layout {
@@ -61,6 +105,8 @@
   background-color: var(--book-bg);
   box-shadow: 20px 20px 40px 10px rgba(238, 215, 209, 0.5);
   position: relative;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
 }
 
 .book-cover {
@@ -152,7 +198,8 @@
   <div class="info">
     Desktop - Hover to open books
   </div>
-  <div class="books-container">
+  <div class="slider-container">
+    <div class="books-container">
     <div class="book-layout">
       <div class="book-cover">
         <img class="book-top" src="https://raw.githubusercontent.com/atomic-variable/images-repo/e37f432405904a280858e5437ce1960753bc78a3/book-top.svg" alt="book-top" />
@@ -161,10 +208,7 @@
       <div class="preface">
         <div class="content">
           <div class="header">
-            <div class="title">The Diary of a Young Girl</div>
-            <div class="icon">
-              <i class="fas fa-chevron-down"></i>
-            </div>
+            <div class="title">Young Girl</div>
           </div>
           <div class="author">by Anne Frank</div>
           <div class="body">
@@ -187,9 +231,6 @@
         <div class="content">
           <div class="header">
             <div class="title">Pride and Prejudice</div>
-            <div class="icon">
-              <i class="fas fa-chevron-down"></i>
-            </div>
           </div>
           <div class="author">by Jane Austen</div>
           <div class="body">
@@ -212,9 +253,6 @@
         <div class="content">
           <div class="header">
             <div class="title">1984</div>
-            <div class="icon">
-              <i class="fas fa-chevron-down"></i>
-            </div>
           </div>
           <div class="author">by George Orwell</div>
           <div class="body">
@@ -228,7 +266,85 @@
         </div>
       </div>
     </div>
+    <div class="book-layout">
+      <div class="book-cover">
+        <img class="book-top" src="https://raw.githubusercontent.com/atomic-variable/images-repo/e37f432405904a280858e5437ce1960753bc78a3/book-top.svg" alt="book-top" />
+        <img class="book-side" src="https://raw.githubusercontent.com/atomic-variable/images-repo/e37f432405904a280858e5437ce1960753bc78a3/book-side.svg" alt="book-side" />
+      </div>
+      <div class="preface">
+        <div class="content">
+          <div class="header">
+            <div class="title">To Kill a Mockingbird</div>
+            <div class="icon">
+              <i class="fas fa-chevron-down"></i>
+            </div>
+          </div>
+          <div class="author">by Harper Lee</div>
+          <div class="body">
+            <p>To Kill a Mockingbird is a novel by Harper Lee published in 1960. It was immediately successful, winning the Pulitzer Prize, and has become a classic of modern American literature.</p>
+            <p>The plot and characters are loosely based on Lee's observations of her family, her neighbors and an event that occurred near her hometown in 1936, when she was 10 years old.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="book-layout">
+      <div class="book-cover">
+        <img class="book-top" src="https://raw.githubusercontent.com/atomic-variable/images-repo/e37f432405904a280858e5437ce1960753bc78a3/book-top.svg" alt="book-top" />
+        <img class="book-side" src="https://raw.githubusercontent.com/atomic-variable/images-repo/e37f432405904a280858e5437ce1960753bc78a3/book-side.svg" alt="book-side" />
+      </div>
+      <div class="preface">
+        <div class="content">
+          <div class="header">
+            <div class="title">The Great Gatsby</div>
+            <div class="icon">
+              <i class="fas fa-chevron-down"></i>
+            </div>
+          </div>
+          <div class="author">by F. Scott Fitzgerald</div>
+          <div class="body">
+            <p>The Great Gatsby is a 1925 novel by American writer F. Scott Fitzgerald. Set in the Jazz Age on Long Island, near New York City, the novel depicts first-person narrator Nick Carraway's interactions with mysterious millionaire Jay Gatsby and Gatsby's obsession to reunite with his former lover, Daisy Buchanan.</p>
+            <p>The novel was inspired by a youthful romance Fitzgerald had with socialite Ginevra King, and the riotous parties he attended on Long Island's North Shore in 1922.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="book-layout">
+      <div class="book-cover">
+        <img class="book-top" src="https://raw.githubusercontent.com/atomic-variable/images-repo/e37f432405904a280858e5437ce1960753bc78a3/book-top.svg" alt="book-top" />
+        <img class="book-side" src="https://raw.githubusercontent.com/atomic-variable/images-repo/e37f432405904a280858e5437ce1960753bc78a3/book-side.svg" alt="book-side" />
+      </div>
+      <div class="preface">
+        <div class="content">
+          <div class="header">
+            <div class="title">Harry Potter and the Philosopher's Stone</div>
+            <div class="icon">
+              <i class="fas fa-chevron-down"></i>
+            </div>
+          </div>
+          <div class="author">by J.K. Rowling</div>
+          <div class="body">
+            <p>Harry Potter and the Philosopher's Stone is a fantasy novel written by British author J. K. Rowling. The first novel in the Harry Potter series and Rowling's debut novel, it follows Harry Potter, a young wizard who discovers his magical heritage on his eleventh birthday, when he has to attend Hogwarts School of Witchcraft and Wizardry and is thrust into a destiny he never wanted.</p>
+            <p>The book was first published in the United Kingdom on 26 June 1997 by Bloomsbury. It was published in the United States on 1 September 1998 by Scholastic.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="nav-btn" id="prev"><i class="fas fa-chevron-left"></i></button>
+    <button class="nav-btn" id="next"><i class="fas fa-chevron-right"></i></button>
   </div>
-</div>
+  </div>
+<script>
+const prevBtn = document.getElementById('prev');
+const nextBtn = document.getElementById('next');
+const booksContainer = document.querySelector('.books-container');
+
+prevBtn.addEventListener('click', () => {
+  booksContainer.scrollBy({ left: -1020, behavior: 'smooth' });
+});
+
+nextBtn.addEventListener('click', () => {
+  booksContainer.scrollBy({ left: 1020, behavior: 'smooth' });
+});
+</script>
 </body>
 </html>
