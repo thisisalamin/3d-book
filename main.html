@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Book Slider - 6 Books</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <style>
+    * {
+      border: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --wp-mobile-width: 325px;
+      --wp-mobile-height: 670px;
+      --wp-mobile-radius: 25px;
+      --wp-separator-height: 500px;
+
+      --wp-bg: #fdf3f2;
+      --wp-mobile-bg: #fdeae6;
+      --wp-intro-bg: #eed7d1;
+      --wp-font-color: #807b7b;
+
+      --wp-transition: transform 0.7s ease-in-out;
+    }
+
+    body {
+      background-color: var(--wp-bg);
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .wp-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--wp-bg);
+      padding: 40px 0;
+      position: relative;
+    }
+
+    .wp-info {
+      font-style: italic;
+      font-size: 26px;
+      margin-bottom: 20px;
+      color: var(--wp-font-color);
+    }
+
+    /* Slider Wrapper */
+    .wp-slider-wrapper {
+      width: 80%;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .wp-books-track {
+      display: flex;
+      transition: transform 0.6s ease-in-out;
+    }
+
+    .wp-mobile-layout {
+      width: var(--wp-mobile-width);
+      height: var(--wp-mobile-height);
+      border-radius: var(--wp-mobile-radius);
+      perspective: 500px;
+      overflow: hidden;
+      color: var(--wp-font-color);
+      background-color: var(--wp-mobile-bg);
+      box-shadow: 36px 36px 50px 15px #eed7d1d1;
+      position: relative;
+      margin: 0 15px;
+      flex-shrink: 0;
+    }
+
+    .wp-mobile-layout .wp-notification-header {
+      position: absolute;
+      top: 5px;
+      width: 100%;
+      padding: 5px 15px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: bold;
+      z-index: 6;
+    }
+
+    .wp-mobile-layout .wp-actions {
+      position: absolute;
+      top: 37px;
+      width: 100%;
+      padding: 50px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 20px;
+      z-index: 6;
+    }
+
+    .wp-mobile-layout .wp-book-cover {
+      position: relative;
+      height: var(--wp-separator-height);
+      width: calc(var(--wp-mobile-width) * 2);
+      left: -52.5%;
+      border-top-left-radius: var(--wp-mobile-radius);
+      border-top-right-radius: var(--wp-mobile-radius);
+      background-color: var(--wp-intro-bg);
+      transform-style: preserve-3d;
+      transform-origin: 50% 40%;
+      transition: var(--wp-transition);
+      z-index: 4;
+    }
+
+    .wp-mobile-layout .wp-book-top {
+      width: 170px;
+      position: absolute;
+      top: 180px;
+      left: 250px;
+      z-index: 5;
+      transform: translateZ(28.5px);
+    }
+
+    .wp-mobile-layout .wp-book-side {
+      position: absolute;
+      top: 430px;
+      left: 222px;
+      transform: translateY(-15px) translateX(0px) translateZ(15px) rotateX(104deg);
+    }
+
+    .wp-mobile-layout .wp-book-cover:hover {
+      transform: rotateX(75deg) translateZ(3px) scale(0.75);
+    }
+
+    .wp-mobile-layout .wp-book-cover:hover + .wp-preface {
+      transform: translateY(-302px);
+    }
+
+    .wp-mobile-layout .wp-book-cover:hover + .wp-preface .wp-icon {
+      transform: rotateX(180deg);
+    }
+
+    .wp-mobile-layout .wp-preface {
+      height: var(--wp-separator-height);
+      padding: 50px;
+      transition: var(--wp-transition);
+      background: white;
+    }
+
+    .wp-mobile-layout .wp-preface .wp-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .wp-mobile-layout .wp-preface .wp-title {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .wp-mobile-layout .wp-preface .wp-author {
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+
+    .wp-mobile-layout .wp-preface .wp-icon {
+      transform-origin: top;
+      transition: var(--wp-transition);
+    }
+
+    .wp-mobile-layout .wp-preface .wp-body {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .wp-mobile-layout .wp-preface .wp-body p:first-child {
+      margin-bottom: 15px;
+    }
+
+    /* Arrows */
+    .wp-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 32px;
+      color: #444;
+      cursor: pointer;
+      z-index: 10;
+      background: rgba(255,255,255,0.8);
+      padding: 10px;
+      border-radius: 50%;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: background 0.3s;
+    }
+
+    .wp-arrow:hover {
+      background: white;
+    }
+
+    .wp-arrow-left {
+      left: 10px;
+    }
+
+    .wp-arrow-right {
+      right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wp-container">
+    <div class="wp-info">Mobile - Try tapping</div>
+
+    <div class="wp-slider-wrapper">
+      <div class="wp-arrow wp-arrow-left"><i class="fas fa-chevron-left"></i></div>
+      <div class="wp-arrow wp-arrow-right"><i class="fas fa-chevron-right"></i></div>
+
+      <div class="wp-books-track" id="wpBooksTrack">
+
+        <!-- Book 1 -->
+        <div class="wp-mobile-layout">
+          <div class="wp-notification-header">
+            <div class="time">9:41</div>
+            <div class="necessities"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div>
+          </div>
+          <div class="wp-actions"><i class="fas fa-chevron-left"></i><i class="fas fa-bookmark"></i></div>
+          <div class="wp-book-cover">
+            <img class="wp-book-top" src="https://raw.githubusercontent.com/atomic-variable/images-repo/e37f432405904a280858e5437ce1960753bc78a3/book-top.svg" alt="book-top" />
+            <img class="wp-book-side" src="https://raw.githubusercontent.com/atomic-variable/images-repo/e37f432405904a280858e5437ce1960753bc78a3/book-side.svg" alt="book-side" />
+          </div>
+          <div class="wp-preface">
+            <div class="wp-header">
+              <div class="wp-title">The Diary of a Young Girl</div>
+              <div class="wp-icon"><i class="fas fa-chevron-down"></i></div>
+            </div>
+            <div class="wp-author">by Anne Frank</div>
+            <div class="wp-body">
+              <p>Also known as The Diary of Anne Frank, written during the Nazi occupation.</p>
+              <p>Anne called her diary "Kitty", writing letters addressed to it.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Book 2 -->
+        <div class="wp-mobile-layout">
+          <div class="wp-notification-header"><div class="time">10:12</div><div class="necessities"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+          <div class="wp-actions"><i class="fas fa-chevron-left"></i><i class="fas fa-bookmark"></i></div>
+          <div class="wp-book-cover">
+            <img class="wp-book-top" src="https://raw.githubusercontent.com/atomic-variable/images-repo/e37f432405904a280858e5437ce1960753bc78a3/book-top.svg" alt="book-top" />
+            <img class="wp-book-side" src="https://raw.githubusercontent.com/atomic-variable/images-repo/e37f432405904a280858e5437ce1960753bc78a3/book-side.svg" alt="book-side" />
+          </div>
+          <div class="wp-preface">
+            <div class="wp-header"><div class="wp-title">Pride and Prejudice</div><div class="wp-icon"><i class="fas fa-chevron-down"></i></div></div>
+            <div class="wp-author">by Jane Austen</div>
+            <div class="wp-body">
+              <p>A romantic novel of manners depicting the British gentry.</p>
+              <p>Focuses on Elizabeth Bennet’s growth and love story with Mr. Darcy.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Book 3 -->
+        <div class="wp-mobile-layout">
+          <div class="wp-notification-header"><div class="time">11:30</div><div class="necessities"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+          <div class="wp-actions"><i class="fas fa-chevron-left"></i><i class="fas fa-bookmark"></i></div>
+          <div class="wp-book-cover">
+            <img class="wp-book-top" src="https://raw.githubusercontent.com/atomic-variable/images-repo/e37f432405904a280858e5437ce1960753bc78a3/book-top.svg" alt="book-top" />
+            <img class="wp-book-side" src="https://raw.githubusercontent.com/atomic-variable/images-repo/e37f432405904a280858e5437ce1960753bc78a3/book-side.svg" alt="book-side" />
+          </div>
+          <div class="wp-preface">
+            <div class="wp-header"><div class="wp-title">Moby-Dick</div><div class="wp-icon"><i class="fas fa-chevron-down"></i></div></div>
+            <div class="wp-author">by Herman Melville</div>
+            <div class="wp-body">
+              <p>The epic tale of Captain Ahab’s obsession with the white whale.</p>
+              <p>A symbolic work about revenge and man vs nature.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Book 4 -->
+        <div class="wp-mobile-layout">
+          <div class="wp-notification-header"><div class="time">12:20</div><div class="necessities"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+          <div class="wp-actions"><i class="fas fa-chevron-left"></i><i class="fas fa-bookmark"></i></div>
+          <div class="wp-book-cover">
+            <img class="wp-book-top" src="https://raw.githubusercontent.com/atomic-variable/images-repo/e37f432405904a280858e5437ce1960753bc78a3/book-top.svg" alt="book-top" />
+            <img class="wp-book-side" src="https://raw.githubusercontent.com/atomic-variable/images-repo/e37f432405904a280858e5437ce1960753bc78a3/book-side.svg" alt="book-side" />
+          </div>
+          <div class="wp-preface">
+            <div class="wp-header"><div class="wp-title">1984</div><div class="wp-icon"><i class="fas fa-chevron-down"></i></div></div>
+            <div class="wp-author">by George Orwell</div>
+            <div class="wp-body">
+              <p>A dystopian novel about totalitarian government surveillance.</p>
+              <p>Introduced terms like Big Brother and thoughtcrime.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Book 5 -->
+        <div class="wp-mobile-layout">
+          <div class="wp-notification-header"><div class="time">14:10</div><div class="necessities"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+          <div class="wp-actions"><i class="fas fa-chevron-left"></i><i class="fas fa-bookmark"></i></div>
+          <div class="wp-book-cover">
+            <img class="wp-book-top" src="https://raw.githubusercontent.com/atomic-variable/images-repo/e37f432405904a280858e5437ce1960753bc78a3/book-top.svg" alt="book-top" />
+            <img class="wp-book-side" src="https://raw.githubusercontent.com/atomic-variable/images-repo/e37f432405904a280858e5437ce1960753bc78a3/book-side.svg" alt="book-side" />
+          </div>
+          <div class="wp-preface">
+            <div class="wp-header"><div class="wp-title">To Kill a Mockingbird</div><div class="wp-icon"><i class="fas fa-chevron-down"></i></div></div>
+            <div class="wp-author">by Harper Lee</div>
+            <div class="wp-body">
+              <p>A classic novel about racism and justice in the Deep South.</p>
+              <p>Seen through the eyes of young Scout Finch.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Book 6 -->
+        <div class="wp-mobile-layout">
+          <div class="wp-notification-header"><div class="time">15:25</div><div class="necessities"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+          <div class="wp-actions"><i class="fas fa-chevron-left"></i><i class="fas fa-bookmark"></i></div>
+          <div class="wp-book-cover">
+            <img class="wp-book-top" src="https://raw.githubusercontent.com/atomic-variable/images-repo/e37f432405904a280858e5437ce1960753bc78a3/book-top.svg" alt="book-top" />
+            <img class="wp-book-side" src="https://raw.githubusercontent.com/atomic-variable/images-repo/e37f432405904a280858e5437ce1960753bc78a3/book-side.svg" alt="book-side" />
+          </div>
+          <div class="wp-preface">
+            <div class="wp-header"><div class="wp-title">The Great Gatsby</div><div class="wp-icon"><i class="fas fa-chevron-down"></i></div></div>
+            <div class="wp-author">by F. Scott Fitzgerald</div>
+            <div class="wp-body">
+              <p>A story of wealth, love, and the American dream in the Jazz Age.</p>
+              <p>Explores the illusion of success and happiness.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const track = document.getElementById("wpBooksTrack");
+    const leftArrow = document.querySelector(".wp-arrow-left");
+    const rightArrow = document.querySelector(".wp-arrow-right");
+
+    let currentIndex = 0;
+    const totalBooks = 6;
+    const visibleBooks = 3;
+
+    function updateSlider() {
+      const bookWidth = document.querySelector(".wp-mobile-layout").offsetWidth + 30; // width + margin
+      track.style.transform = `translateX(-${currentIndex * bookWidth}px)`;
+    }
+
+    rightArrow.addEventListener("click", () => {
+      if (currentIndex < totalBooks - visibleBooks) {
+        currentIndex++;
+        updateSlider();
+      }
+    });
+
+    leftArrow.addEventListener("click", () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateSlider();
+      }
+    });
+
+    window.addEventListener("resize", updateSlider);
+  </script>
+</body>
+</html>
